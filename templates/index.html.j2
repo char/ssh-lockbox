@@ -15,6 +15,8 @@
     </header>
 
     {% if user %}
+      <p>Logged in as {{ user.username }}</p>
+
       <form class="form" action="/create" method="POST">
         <label for="key">Public Key</label>
         <textarea rows="5" cols="80" name="key" id="key" placeholder="ssh-ed25519 ..." required></textarea>
