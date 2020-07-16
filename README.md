@@ -17,3 +17,9 @@ $ pip install -r requirements.txt
 $ ./run_prod.sh ./ssh-key-authority.sock # Starts a Hypercorn instance listening at unix:./ssh-key-authority.sock
 $ # Set up nginx to proxy into the unix socket
 ```
+
+## Details
+
+Without authentication, keys are publicised without comment fields, à la GitHub's `https://github.com/<user>.keys` route.
+
+With authentication, it is possible to access the keys with the comment field intact.

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>SSH Key Authority</title>
+  <link rel="stylesheet" href="/static/global.css">
+</head>
+
+<body>
+  <main>
+    <header>
+      <h1>SSH Key Authority</h1>
+      <p>A centralised location for your personal SSH keys.</p>
+    </header>
+
+    {% if user %}
+      <form class="form" action="/create" method="POST">
+        <label for="key">Public Key</label>
+        <textarea rows="5" cols="80" name="key" id="key" placeholder="ssh-ed25519 ..." required></textarea>
+
+        <input type="submit" value="Create">
+      </form>
+    {% else %}
+      <form class="form" action="/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+
+        <input type="submit" value="Log in">
+      </form>
+    {% endif %}
+  </main>
+</body>
+
+</html>
