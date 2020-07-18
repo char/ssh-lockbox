@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
-from ssh_key_authority import app
+import uvicorn
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    uvicorn.run(
+        "ssh_key_authority.run.debug:app", host="127.0.0.1", port=5000, reload=True
+    )

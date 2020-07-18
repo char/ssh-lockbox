@@ -25,6 +25,7 @@ label {
   font-weight: 500;
 }
 
+input[type="text"],
 input[type="password"],
 textarea {
   background: #fff;
@@ -46,6 +47,7 @@ textarea {
   overflow-y: scroll;
 }
 
+input[type="text"]:focus,
 input[type="password"]:focus,
 textarea:focus {
   background-color: #fff;
@@ -55,6 +57,8 @@ textarea:focus {
 }
 
 input[type="submit"] {
+  margin-top: 1em;
+
   background-color: rgb(21, 124, 214);
   border: rgb(2, 97, 180);
   border-radius: 6px;

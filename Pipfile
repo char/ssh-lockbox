@@ -6,9 +6,15 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-quart = "*"
-hypercorn = "*"
 httpx = "*"
+uvicorn = "*"
+starlette = "*"
+jinja2 = "*"
+aiofiles = "*"
+alembic = "*"
+sqlalchemy = "*"
+databases = {extras = ["sqlite"], version = "*"}
+itsdangerous = "*"
 
 [requires]
 python_version = "3.8"
