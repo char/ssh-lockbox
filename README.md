@@ -14,8 +14,10 @@ Supports:
 ```
 $ # set up a virtualenv, or don't, your choice. then:
 $ pip install -r requirements.txt
-$ ./run_prod.sh ./ssh-key-authority.sock # Starts a Hypercorn instance listening at unix:./ssh-key-authority.sock
-$ # Set up nginx to proxy into the unix socket
+$ cp .env.schema .env; $EDITOR .env # Set up the DATABASE_URL value
+$ alembic upgrade head # Run migrations to initialise the database
+$ ./run_prod.sh ./ssh-key-authority.sock # Starts a gunicorn instance (with a uvicorn worker) listening at unix:./ssh-key-authority.sock
+$ # Use nginx to proxy into the socket
 ```
 
 ## Details
