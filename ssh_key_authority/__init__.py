@@ -1,47 +1,59 @@
+from starlette.applications import Starlette
 from starlette.routing import Route, Mount
-from starlette.config import Config
+
+from starlette.requests import Request
+
+from starlette.middleware import Middleware
+from starlette.middleware.sessions import SessionMiddleware
+from starlette.middleware.authentication import AuthenticationMiddleware
+
 from starlette.staticfiles import StaticFiles
-from starlette.templating import Jinja2Templates
 from os.path import realpath
+
+from starlette.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="templates")
 
 
-async def index_page(request):
-    return templates.TemplateResponse("index.html.j2", {"request": request})
-
-
-async def login(req):
-    # TODO: Sign in a user by username and password, and set a session cookie.
-    # Always redirect to the main page; if login fails, we can show a flash to the user.
-    pass
-
-
-async def create_key_entry(req):
+async def add_key_entry(request):
     # TODO: Parse the request form and create a key entry for the authenticated user.
     # Authentication should be possible via Bearer token or session cookies.
     pass
 
 
-async def fetch_keys(req):
-    # user = req.path_params["user"]
+async def fetch_keys(request):
+    # user = request.path_params["user"]
     # TODO: Return a text/plain response containing this user's SSH keys.
-    # If a valid authentication token is provided, include the SSH keys' comment fields.
+    # If valid authentication is present, include the SSH keys' comment fields.
     pass
 
 
-routes = [
-    Route("/", endpoint=index_page),
-    Route("/login", endpoint=login),
-    Route("/create", endpoint=create_key_entry, methods=["POST"]),
-    Route("/keys/{user}", endpoint=fetch_keys),
-    Mount(
-        "/static",
-        app=StaticFiles(
-            directory=realpath("static")
-        ),  # FIXME: Starlette 0.13.5 has a bug that forces us to realpath() the static directory
-        name="static",
-    ),
-]
+from ssh_key_authority.db import database
+from ssh_key_authority.config import SESSION_SECRET_KEY
+from ssh_key_authority.auth import SessionAuthBackend
 
-middleware = []
+from ssh_key_authority.routes.main_page import main_page_endpoint
+from ssh_key_authority.routes.login import login_endpoint, logout_endpoint
+
+app = Starlette(
+    routes=[
+        Route("/", endpoint=main_page_endpoint),
+        Route("/login", endpoint=login_endpoint, methods=["POST"]),
+        Route("/logout", endpoint=logout_endpoint, methods=["POST"]),
+        Route("/add_key", endpoint=add_key_entry, methods=["POST"]),
+        Route("/keys/{user}", endpoint=fetch_keys),
+        Mount(
+            "/static",
+            app=StaticFiles(
+                directory=realpath("static")
+            ),  # FIXME: Starlette 0.13.5 has a bug that forces us to realpath() the static directory
+            name="static",
+        ),
+    ],
+    middleware=[
+        Middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY),
+        Middleware(AuthenticationMiddleware, backend=SessionAuthBackend()),
+    ],
+    on_startup=[database.connect],
+    on_shutdown=[database.disconnect],
+)

@@ -25,3 +25,13 @@ $ # Use nginx to proxy into the socket
 Without authentication, keys are publicised without comment fields, à la GitHub's `https://github.com/<user>.keys` route.
 
 With authentication, it is possible to access the keys with the comment field intact.
+
+## Configuration
+
+Configuration can be achieved via a `.env` file or through environment variables.
+
+The configuration entries are as follows:
+
+- `DATABASE_URL`: A connection URL for the application's database. A configuration (using SQLite) for development is included in `.env.schema`.
+- `SESSION_SECRET_KEY`: The secret key to sign session information with. This should be a randomly generated blob of data.
+- `REGISTRATION_ENABLED`: Whether to permit arbitrary user registration.

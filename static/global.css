@@ -4,17 +4,24 @@ body {
 }
 
 main {
-  max-width: 96ch;
+  max-width: 60ch;
   margin: 0 auto;
 }
 
-form {
+header {
+  border-bottom: 1px solid black;
+}
+
+.form {
   display: flex;
   flex-direction: column;
 
-  max-width: 80%;
-  margin: 0 auto;
   margin-top: 2em;
+}
+
+.small-form {
+  margin-bottom: 2em;
+  margin-top: -0.5em;
 }
 
 textarea {
@@ -57,8 +64,6 @@ textarea:focus {
 }
 
 input[type="submit"] {
-  margin-top: 1em;
-
   background-color: rgb(21, 124, 214);
   border: rgb(2, 97, 180);
   border-radius: 6px;
@@ -85,4 +90,8 @@ input[type="submit"]:active {
   background-color: rgb(47, 123, 190);
   border-color: rgb(23, 78, 126);
   color: #ffffff;
+}
+
+input+input[type="submit"] {
+  margin-top: 0.5em;
 }

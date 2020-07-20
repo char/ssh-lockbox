@@ -15,6 +15,8 @@ alembic = "*"
 sqlalchemy = "*"
 databases = {extras = ["sqlite"], version = "*"}
 itsdangerous = "*"
+python-multipart = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.8"

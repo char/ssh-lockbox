@@ -14,14 +14,17 @@
       <p>A centralised location for your personal SSH keys.</p>
     </header>
 
-    {% if user %}
-      <p>Logged in as {{ user.username }}</p>
+    {% if request.user.is_authenticated %}
+      <p>Logged in as <strong>{{ request.user.display_name }}</strong>.</p>
+      <form class="small-form" action="/logout" method="POST">
+        <input type="submit" value="Log out">
+      </form>
 
-      <form class="form" action="/create" method="POST">
+      <form class="form" action="/add_key" method="POST">
         <label for="key">Public Key</label>
         <textarea rows="5" cols="80" name="key" id="key" placeholder="ssh-ed25519 ..." required></textarea>
 
-        <input type="submit" value="Create">
+        <input type="submit" value="Add key">
       </form>
     {% else %}
       <form class="form" action="/login" method="POST">
@@ -33,6 +36,10 @@
 
         <input type="submit" value="Log in">
       </form>
+
+      {% if registration_enabled %}
+        <p>Don't have an account? <a href="/register/">Sign up!</a></p>
+      {% endif %}
     {% endif %}
   </main>
 </body>
