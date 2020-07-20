@@ -34,12 +34,15 @@ from ssh_key_authority.auth import SessionAuthBackend
 
 from ssh_key_authority.routes.main_page import main_page_endpoint
 from ssh_key_authority.routes.login import login_endpoint, logout_endpoint
+from ssh_key_authority.routes.register import register_page_endpoint, register_endpoint
 
 app = Starlette(
     routes=[
         Route("/", endpoint=main_page_endpoint),
         Route("/login", endpoint=login_endpoint, methods=["POST"]),
         Route("/logout", endpoint=logout_endpoint, methods=["POST"]),
+        Route("/register/", endpoint=register_page_endpoint),
+        Route("/register", endpoint=register_endpoint, methods=["POST"]),
         Route("/add_key", endpoint=add_key_entry, methods=["POST"]),
         Route("/keys/{user}", endpoint=fetch_keys),
         Mount(

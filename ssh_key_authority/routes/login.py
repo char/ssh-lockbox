@@ -7,7 +7,7 @@ from ssh_key_authority.db import database, users
 from ssh_key_authority.flashes import flash
 
 
-async def login_valid(username, password):
+async def login_valid(username: str, password: str) -> bool:
     query = users.select().where(users.c.username == username)
     matching_user = await database.fetch_one(query=query)
     if matching_user:
@@ -21,6 +21,7 @@ async def login_valid(username, password):
 
 
 async def login_endpoint(request: Request):
+    """Process a login form submission (via POST request only)"""
     form_data = await request.form()
     username = form_data.get("username")
     password = form_data.get("password")
@@ -39,6 +40,7 @@ async def login_endpoint(request: Request):
 
 
 async def logout_endpoint(request: Request):
+    """Process a logout request (via POST request only)"""
     del request.session["username"]
     flash(request, "success", "Logged out.")
     return RedirectResponse("/", 303)

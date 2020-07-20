@@ -10,8 +10,10 @@ def flash(request: Request, category: str, message: str):
     flashes.append({"category": category, "message": message})
 
 
-def get_flashes(request: Request) -> List[Tuple[str, str]]:
+def get_and_clear_flashes(request: Request) -> List[Tuple[str, str]]:
     flashes = request.session.get("flashes")
+    request.session["flashes"] = []
+
     if flashes is None:
         return []
 

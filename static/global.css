@@ -10,6 +10,7 @@ main {
 
 header {
   border-bottom: 1px solid black;
+  margin-bottom: 1.5em;
 }
 
 .form {
@@ -94,4 +95,37 @@ input[type="submit"]:active {
 
 input+input[type="submit"] {
   margin-top: 0.5em;
+}
+
+.flashes {
+  display: block;
+  position: fixed;
+
+  right: 1em;
+  bottom: 1em;
+
+  margin: 0;
+  padding: 0;
+}
+
+.flash {
+  list-style: none;
+
+  padding: 1em;
+  border-radius: 6px;
+
+  background-color: #333;
+  color: #fff;
+}
+
+.flash+.flash {
+  margin-top: .5em;
+}
+
+.flash-error {
+  background-color: #a33;
+}
+
+.flash-success {
+  background-color: #27b;
 }

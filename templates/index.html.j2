@@ -1,47 +1,37 @@
-<!DOCTYPE html>
-<html>
+{% set override_title = true %}
+{% set title = "SSH Key Authority" %}
+{% set description = "A centralised location for your personal SSH keys." %}
 
-<head>
-  <meta charset="utf-8">
-  <title>SSH Key Authority</title>
-  <link rel="stylesheet" href="/static/global.css">
-</head>
+{% extends "base.html.j2" %}
+{% block title %}SSH Key Authority{% endblock %}
 
-<body>
-  <main>
-    <header>
-      <h1>SSH Key Authority</h1>
-      <p>A centralised location for your personal SSH keys.</p>
-    </header>
+{% block content %}
+  {% if request.user.is_authenticated %}
+    <p>Logged in as <strong>{{ request.user.display_name }}</strong>.</p>
+    <form class="small-form" action="/logout" method="POST">
+      <input type="submit" value="Log out">
+    </form>
 
-    {% if request.user.is_authenticated %}
-      <p>Logged in as <strong>{{ request.user.display_name }}</strong>.</p>
-      <form class="small-form" action="/logout" method="POST">
-        <input type="submit" value="Log out">
-      </form>
+    <form class="form" action="/add_key" method="POST">
+      <label for="key">Public Key</label>
+      <textarea rows="5" cols="80" name="key" id="key" placeholder="ssh-ed25519 ..." required></textarea>
 
-      <form class="form" action="/add_key" method="POST">
-        <label for="key">Public Key</label>
-        <textarea rows="5" cols="80" name="key" id="key" placeholder="ssh-ed25519 ..." required></textarea>
+      <input type="submit" value="Add key">
+    </form>
+  {% else %}
+    <form class="form" action="/login" method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Username" required>
 
-        <input type="submit" value="Add key">
-      </form>
-    {% else %}
-      <form class="form" action="/login" method="POST">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Username" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Password" required>
 
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" placeholder="Password" required>
+      <input type="submit" value="Log in">
+    </form>
 
-        <input type="submit" value="Log in">
-      </form>
-
-      {% if registration_enabled %}
-        <p>Don't have an account? <a href="/register/">Sign up!</a></p>
-      {% endif %}
+    {% if registration_enabled %}
+      <p>Don't have an account? <a href="/register/">Sign up!</a></p>
     {% endif %}
-  </main>
-</body>
+  {% endif %}
 
-</html>
+{% endblock %}

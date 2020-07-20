@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" href="data:">
+    <title>{{ title }}{% if not override_title %} - SSH Key Authority{% endif %}</title>
+
+    <link rel="stylesheet" href="/static/global.css">
+
+    {% block head %}{% endblock %}
+  </head>
+
+  <body>
+    <main>
+      {% if flashes %}
+        <ul class="flashes">
+          {% for category, message in flashes %}
+            <li class="flash flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if not hide_header %}
+        <header>
+          <h1>{{ title }}</h1>
+          <p>{{ description }}</p>
+        </header>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
