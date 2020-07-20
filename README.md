@@ -1,6 +1,6 @@
 # ssh-key-authority
 
-A centralised location for your personal SSH keys.
+A centralised location for your personal SSH keys. Written using [Starlette](https://www.starlette.io/).
 
 Supports:
 
