@@ -63,7 +63,7 @@ async def real_register_endpoint(request: Request):
     if not has_errors:
         flash(request, "success", "Successfully registered. Please log in.")
         async with database.transaction():
-            password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+            password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
             query = users.insert().values(
                 username=username, password_hash=password_hash
             )
