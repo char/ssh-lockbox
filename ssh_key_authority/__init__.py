@@ -9,14 +9,6 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 
 from starlette.staticfiles import StaticFiles
 
-
-async def fetch_keys(request):
-    # user = request.path_params["user"]
-    # TODO: Return a text/plain response containing this user's SSH keys.
-    # If valid authentication is present, include the SSH keys' comment fields.
-    pass
-
-
 from ssh_key_authority.db import database
 from ssh_key_authority.config import SESSION_SECRET_KEY
 from ssh_key_authority.auth import SessionAuthBackend
@@ -25,6 +17,7 @@ from ssh_key_authority.routes.main_page import main_page_endpoint
 from ssh_key_authority.routes.login import login_endpoint, logout_endpoint
 from ssh_key_authority.routes.register import register_page_endpoint, register_endpoint
 from ssh_key_authority.routes.deploy_key import deploy_key_endpoint
+from ssh_key_authority.routes.list_keys import list_keys_endpoint
 
 app = Starlette(
     routes=[
@@ -34,7 +27,7 @@ app = Starlette(
         Route("/register/", endpoint=register_page_endpoint),
         Route("/register", endpoint=register_endpoint, methods=["POST"]),
         Route("/deploy", endpoint=deploy_key_endpoint, methods=["POST"]),
-        Route("/keys/{user}", endpoint=fetch_keys),
+        Route("/keys/{user}", endpoint=list_keys_endpoint),
         Mount("/static", app=StaticFiles(directory="static"), name="static",),
     ],
     middleware=[
