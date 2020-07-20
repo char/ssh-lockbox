@@ -8,7 +8,6 @@ from starlette.middleware.sessions import SessionMiddleware
 from starlette.middleware.authentication import AuthenticationMiddleware
 
 from starlette.staticfiles import StaticFiles
-from os.path import realpath
 
 
 async def fetch_keys(request):
@@ -36,13 +35,7 @@ app = Starlette(
         Route("/register", endpoint=register_endpoint, methods=["POST"]),
         Route("/deploy", endpoint=deploy_key_endpoint, methods=["POST"]),
         Route("/keys/{user}", endpoint=fetch_keys),
-        Mount(
-            "/static",
-            app=StaticFiles(
-                directory=realpath("static")
-            ),  # FIXME: Starlette 0.13.5 has a bug that forces us to realpath() the static directory
-            name="static",
-        ),
+        Mount("/static", app=StaticFiles(directory="static"), name="static",),
     ],
     middleware=[
         Middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY),
