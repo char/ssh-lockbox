@@ -10,10 +10,6 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 from starlette.staticfiles import StaticFiles
 from os.path import realpath
 
-from starlette.templating import Jinja2Templates
-
-templates = Jinja2Templates(directory="templates")
-
 
 async def add_key_entry(request):
     # TODO: Parse the request form and create a key entry for the authenticated user.

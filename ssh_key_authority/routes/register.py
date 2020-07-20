@@ -3,10 +3,10 @@ import bcrypt
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, PlainTextResponse
 
-from ssh_key_authority import templates
+from ssh_key_authority.templating import render_template
 from ssh_key_authority.db import database, users
 from ssh_key_authority.config import REGISTRATION_ENABLED
-from ssh_key_authority.flashes import flash, get_and_clear_flashes
+from ssh_key_authority.flashes import flash
 
 
 async def disabled_registration_endpoint(request: Request):
@@ -22,10 +22,7 @@ async def real_register_page_endpoint(request: Request):
     if request.user.is_authenticated:
         return RedirectResponse("/", 303)
 
-    return templates.TemplateResponse(
-        "register.html.j2",
-        {"request": request, "flashes": get_and_clear_flashes(request)},
-    )
+    return render_template(request, "register.html.j2",)
 
 
 async def user_already_exists(username: str) -> bool:
@@ -62,6 +59,15 @@ async def real_register_endpoint(request: Request):
             "error",
             "The provided password does not match the password confirmation.",
         )
+
+    if not has_errors:
+        flash(request, "success", "Successfully registered. Please log in.")
+        async with database.transaction():
+            password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+            query = users.insert().values(
+                username=username, password_hash=password_hash
+            )
+            await database.execute(query)
 
     return RedirectResponse("/register/" if has_errors else "/", 303)
 
