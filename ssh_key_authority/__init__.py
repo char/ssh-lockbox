@@ -28,7 +28,7 @@ app = Starlette(
         Route("/register", endpoint=register_endpoint, methods=["POST"]),
         Route("/deploy", endpoint=deploy_key_endpoint, methods=["POST"]),
         Route("/keys/{user}", endpoint=list_keys_endpoint),
-        Mount("/static", app=StaticFiles(directory="static"), name="static",),
+        Mount("/static", app=StaticFiles(directory="static"), name="static"),
     ],
     middleware=[
         Middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY),

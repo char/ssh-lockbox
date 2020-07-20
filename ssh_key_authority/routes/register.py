@@ -22,7 +22,7 @@ async def real_register_page_endpoint(request: Request):
     if request.user.is_authenticated:
         return RedirectResponse("/", 303)
 
-    return render_template(request, "register.html.j2",)
+    return render_template(request, "register.html.j2")
 
 
 async def user_already_exists(username: str) -> bool:
