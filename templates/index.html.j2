@@ -9,14 +9,14 @@
   {% if request.user.is_authenticated %}
     <p>Logged in as <strong>{{ request.user.display_name }}</strong>.</p>
     <form class="small-form" action="/logout" method="POST">
-      <input type="submit" value="Log out">
+      <input class="danger" type="submit" value="Log out">
     </form>
 
-    <form class="form" action="/add_key" method="POST">
+    <form class="form" action="/deploy" method="POST">
       <label for="key">Public Key</label>
       <textarea rows="5" cols="80" name="key" id="key" placeholder="ssh-ed25519 ..." required></textarea>
 
-      <input type="submit" value="Add key">
+      <input type="submit" value="Deploy">
     </form>
   {% else %}
     <form class="form" action="/login" method="POST">

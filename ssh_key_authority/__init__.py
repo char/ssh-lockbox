@@ -11,12 +11,6 @@ from starlette.staticfiles import StaticFiles
 from os.path import realpath
 
 
-async def add_key_entry(request):
-    # TODO: Parse the request form and create a key entry for the authenticated user.
-    # Authentication should be possible via Bearer token or session cookies.
-    pass
-
-
 async def fetch_keys(request):
     # user = request.path_params["user"]
     # TODO: Return a text/plain response containing this user's SSH keys.
@@ -31,6 +25,7 @@ from ssh_key_authority.auth import SessionAuthBackend
 from ssh_key_authority.routes.main_page import main_page_endpoint
 from ssh_key_authority.routes.login import login_endpoint, logout_endpoint
 from ssh_key_authority.routes.register import register_page_endpoint, register_endpoint
+from ssh_key_authority.routes.deploy_key import deploy_key_endpoint
 
 app = Starlette(
     routes=[
@@ -39,7 +34,7 @@ app = Starlette(
         Route("/logout", endpoint=logout_endpoint, methods=["POST"]),
         Route("/register/", endpoint=register_page_endpoint),
         Route("/register", endpoint=register_endpoint, methods=["POST"]),
-        Route("/add_key", endpoint=add_key_entry, methods=["POST"]),
+        Route("/deploy", endpoint=deploy_key_endpoint, methods=["POST"]),
         Route("/keys/{user}", endpoint=fetch_keys),
         Mount(
             "/static",

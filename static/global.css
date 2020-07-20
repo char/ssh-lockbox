@@ -97,6 +97,15 @@ input+input[type="submit"] {
   margin-top: 0.5em;
 }
 
+input[type="submit"].danger {
+  background-color: rgb(204, 41, 41);
+}
+
+input[type="submit"]:active.danger {
+  background-color: rgb(160, 41, 41);
+  border-color: rgb(155, 26, 26);
+}
+
 .flashes {
   display: block;
   position: fixed;

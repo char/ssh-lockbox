@@ -77,7 +77,7 @@ async def real_register_endpoint(request: Request):
 register_page_endpoint = (
     real_register_page_endpoint
     if REGISTRATION_ENABLED
-    else disabled_register_page_endpoint
+    else disabled_registration_endpoint
 )
 
 register_endpoint = (
