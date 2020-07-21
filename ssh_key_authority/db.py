@@ -25,3 +25,14 @@ keys = sqlalchemy.Table(
     sqlalchemy.Column("key_contents", sqlalchemy.String, nullable=False),
     sqlalchemy.Column("key_comment", sqlalchemy.String, nullable=False),
 )
+
+access_keys = sqlalchemy.Table(
+    "access_keys",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column(
+        "user_id", sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"), nullable=False
+    ),
+    sqlalchemy.Column("access_key_description", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("access_key_token", sqlalchemy.String, nullable=False),
+)

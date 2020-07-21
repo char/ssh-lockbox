@@ -3,7 +3,7 @@ from typing import Generator
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
-from ssh_key_authority.db import database, keys, users
+from ssh_key_authority.db import database, keys, users, access_keys
 
 
 def generate_key_info(ssh_keys, include_comments: bool) -> Generator[str, None, None]:
@@ -14,6 +14,17 @@ def generate_key_info(ssh_keys, include_comments: bool) -> Generator[str, None, 
             if include_comments
             else f"{key_algo} {key_contents}"
         )
+
+
+async def access_key_matches(user_id):
+    query = access_keys.select().where(access_keys.c.user_id == user_id)
+    async for row in database.iterate(query):
+        access_key_token = row[3]
+
+        if auth_header_parts[1] == access_key_token:
+            return True
+
+    return False
 
 
 async def list_keys_endpoint(request: Request):
@@ -30,5 +41,10 @@ async def list_keys_endpoint(request: Request):
     query = keys.select().where(keys.c.user_id == user[0])
     ssh_keys = await database.fetch_all(query)
 
-    include_comments = False  # TODO: Match an Authorization header value
+    include_comments = False
+    if (authorization_header := request.headers.get("Authorization")) :
+        auth_header_parts = authorization_header.split()
+        if len(auth_header_parts) > 1 and auth_header_parts[0].casefold() == "bearer":
+            include_comments = await access_key_matches(user[0], auth_header_parts[1])
+
     return PlainTextResponse("\n".join(generate_key_info(ssh_keys, include_comments)))
