@@ -1,7 +1,7 @@
 from starlette.requests import Request
 
-from ssh_key_authority.templating import render_template
-from ssh_key_authority.config import REGISTRATION_ENABLED
+from lockbox.templating import render_template
+from lockbox.config import REGISTRATION_ENABLED
 
 
 async def main_page_endpoint(request: Request):

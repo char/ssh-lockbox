@@ -9,15 +9,15 @@ from starlette.middleware.authentication import AuthenticationMiddleware
 
 from starlette.staticfiles import StaticFiles
 
-from ssh_key_authority.db import database
-from ssh_key_authority.config import SESSION_SECRET_KEY
-from ssh_key_authority.auth import SessionAuthBackend
+from lockbox.db import database
+from lockbox.config import SESSION_SECRET_KEY
+from lockbox.auth import SessionAuthBackend
 
-from ssh_key_authority.routes.main_page import main_page_endpoint
-from ssh_key_authority.routes.login import login_endpoint, logout_endpoint
-from ssh_key_authority.routes.register import register_page_endpoint, register_endpoint
-from ssh_key_authority.routes.deploy_key import deploy_key_endpoint
-from ssh_key_authority.routes.list_keys import list_keys_endpoint
+from lockbox.routes.main_page import main_page_endpoint
+from lockbox.routes.login import login_endpoint, logout_endpoint
+from lockbox.routes.register import register_page_endpoint, register_endpoint
+from lockbox.routes.deploy_key import deploy_key_endpoint
+from lockbox.routes.list_keys import list_keys_endpoint
 
 app = Starlette(
     routes=[

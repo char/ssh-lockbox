@@ -10,11 +10,11 @@ fileConfig(config.config_file_name)
 
 import sys, os
 
-# Put the working directory in the sys path so that we can import ssh_key_authority
+# Put the working directory in the sys path so that we can import the lockbox package
 sys.path.insert(0, os.path.abspath("."))
 
-from ssh_key_authority.db import metadata as app_metadata
-from ssh_key_authority.config import DATABASE_URL
+from lockbox.db import metadata as app_metadata
+from lockbox.config import DATABASE_URL
 
 config.set_main_option("sqlalchemy.url", str(DATABASE_URL))
 target_metadata = app_metadata

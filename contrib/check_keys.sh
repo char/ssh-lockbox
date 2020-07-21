@@ -10,11 +10,12 @@ if [ $? == 0 ]; then
 
   authorized_keys_file="~$KEYS_USER/.ssh/authorized_keys"
   if [ -f "$authorized_keys_file" ]; then
-    regular_authorized_keys=`sed '/.*###### SSH-KEY-AUTHORITY SECTION ######.*/{s///;q;}' < "$authorized_keys_file"`
+    regular_authorized_keys=`sed '/.*### LOCKBOX SECTION.*/{s///;q;}' < "$authorized_keys_file"`
 
-    (echo $regular_authorized_keys; echo '###### SSH-KEY-AUTHORITY SECTION ######
-# PLEASE DO NOT EDIT UNDER THIS SECTION
-# IT WILL BE WIPED BY SSH-KEY-AUTHORITY'; echo $fetched_keys) > authorized_keys_file
+    (echo $regular_authorized_keys; echo '### LOCKBOX SECTION
+# Please do not edit under this section, it is
+# automatically generated and may be wiped
+# at any time.'; echo $fetched_keys) > authorized_keys_file
   fi
 else
   >&2 echo "An error occurred while fetching $KEYS_USER's keys from $KEYS_HOST."

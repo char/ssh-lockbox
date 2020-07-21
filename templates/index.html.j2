@@ -1,9 +1,7 @@
 {% set override_title = true %}
-{% set title = "SSH Key Authority" %}
+{% set title = "Lockbox" %}
 {% set description = "A centralised location for your personal SSH keys." %}
-
 {% extends "base.html.j2" %}
-{% block title %}SSH Key Authority{% endblock %}
 
 {% block content %}
   {% if request.user.is_authenticated %}

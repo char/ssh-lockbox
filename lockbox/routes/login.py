@@ -3,8 +3,8 @@ import bcrypt
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
-from ssh_key_authority.db import database, users
-from ssh_key_authority.flashes import flash
+from lockbox.db import database, users
+from lockbox.flashes import flash
 
 
 async def login_valid(username: str, password: str) -> bool:

@@ -1,4 +1,4 @@
-from ssh_key_authority.config import DATABASE_URL
+from lockbox.config import DATABASE_URL
 
 import databases
 import sqlalchemy

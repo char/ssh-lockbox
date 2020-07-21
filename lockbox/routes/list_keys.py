@@ -3,7 +3,7 @@ from typing import Generator
 from starlette.requests import Request
 from starlette.responses import PlainTextResponse
 
-from ssh_key_authority.db import database, keys, users, access_keys
+from lockbox.db import database, keys, users, access_keys
 
 
 def generate_key_info(ssh_keys, include_comments: bool) -> Generator[str, None, None]:

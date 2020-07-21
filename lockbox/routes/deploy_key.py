@@ -3,8 +3,8 @@ from typing import Tuple, Optional
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
-from ssh_key_authority.flashes import flash
-from ssh_key_authority.db import database, keys, users
+from lockbox.flashes import flash
+from lockbox.db import database, keys, users
 
 
 class InvalidKeyException(Exception):

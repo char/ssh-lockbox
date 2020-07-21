@@ -3,10 +3,10 @@ import bcrypt
 from starlette.requests import Request
 from starlette.responses import RedirectResponse, PlainTextResponse
 
-from ssh_key_authority.templating import render_template
-from ssh_key_authority.db import database, users
-from ssh_key_authority.config import REGISTRATION_ENABLED
-from ssh_key_authority.flashes import flash
+from lockbox.templating import render_template
+from lockbox.db import database, users
+from lockbox.config import REGISTRATION_ENABLED
+from lockbox.flashes import flash
 
 
 async def disabled_registration_endpoint(request: Request):

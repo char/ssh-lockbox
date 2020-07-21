@@ -1,7 +1,7 @@
 from starlette.requests import Request
 from starlette.templating import Jinja2Templates
 
-from ssh_key_authority.flashes import get_and_clear_flashes
+from lockbox.flashes import get_and_clear_flashes
 
 templates = Jinja2Templates(directory="templates")
 
