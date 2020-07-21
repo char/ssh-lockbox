@@ -10,4 +10,3 @@ def render_template(request: Request, template_name: str, **kwargs):
     context = {"request": request, "flashes": get_and_clear_flashes(request)}
     context.update(kwargs)
     return templates.TemplateResponse(template_name, context)
-

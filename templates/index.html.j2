@@ -16,6 +16,31 @@
 
       <input type="submit" value="Deploy">
     </form>
+
+    {% if user_ssh_keys %}
+    <table class="keys-table">
+      <thead>
+        <th>Comment</th>
+        <th>Details</th>
+        <th>Actions</th>
+      </thead>
+
+      <tbody>
+        {% for (algo, contents, comment) in user_ssh_keys %}
+          <tr>
+            <td><strong>{{ comment }}</strong></td>
+            <td>{{ algo }}</td>
+            <td>
+              <form class="small-form" method="POST" action="/delete_key">
+                <input type="hidden" name="key_comment" value="{{ comment }}">
+                <input class="danger" type="submit" value="Delete">
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
   {% else %}
     <form class="form" action="/login" method="POST">
       <label for="username">Username</label>

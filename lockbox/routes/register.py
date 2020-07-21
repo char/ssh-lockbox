@@ -40,6 +40,18 @@ async def real_register_endpoint(request: Request):
 
     has_errors = False
 
+    if not username:
+        has_errors = True
+        flash(request, "error", "'username' is a required field.")
+
+    if not password:
+        has_errors = True
+        flash(request, "error", "'password' is a required field.")
+
+    if not password_confirm:
+        has_errors = True
+        flash(request, "error", "'password_confirm' is a required field.")
+
     if await user_already_exists(username):
         has_errors = True
         flash(request, "error", "This username is already taken!")

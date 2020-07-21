@@ -21,7 +21,6 @@ header {
 }
 
 .small-form {
-  margin-bottom: 2em;
   margin-top: -0.5em;
 }
 
@@ -104,6 +103,28 @@ input[type="submit"].danger {
 input[type="submit"]:active.danger {
   background-color: rgb(160, 41, 41);
   border-color: rgb(155, 26, 26);
+}
+
+.keys-table {
+  margin-top: 4em;
+  width: 100%;
+}
+
+thead th {
+  border: 0;
+  border-bottom: 2px solid rgba(0, 0, 0, .12);
+  text-align: left;
+}
+
+tr {
+  margin-bottom: 16px;
+}
+
+th,
+td {
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  padding: 16px 0;
+  vertical-align: inherit;
 }
 
 .flashes {
