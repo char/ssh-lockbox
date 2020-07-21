@@ -41,10 +41,12 @@ async def list_keys_endpoint(request: Request):
     query = keys.select().where(keys.c.user_id == user[0])
     ssh_keys = await database.fetch_all(query)
 
-    include_comments = False
+    include_comments = request.user.username == user[1]
+
     if (authorization_header := request.headers.get("Authorization")) :
         auth_header_parts = authorization_header.split()
         if len(auth_header_parts) > 1 and auth_header_parts[0].casefold() == "bearer":
-            include_comments = await access_key_matches(user[0], auth_header_parts[1])
+            if await access_key_matches(user[0], auth_header_parts[1]):
+                include_comments = True
 
     return PlainTextResponse("\n".join(generate_key_info(ssh_keys, include_comments)))
