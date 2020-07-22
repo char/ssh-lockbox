@@ -41,7 +41,9 @@ async def list_keys_endpoint(request: Request):
     query = keys.select().where(keys.c.user_id == user[0])
     ssh_keys = await database.fetch_all(query)
 
-    include_comments = request.user.username == user[1]
+    include_comments = (
+        request.user.is_authenticated and request.user.username == user[1]
+    )
 
     if (authorization_header := request.headers.get("Authorization")) :
         auth_header_parts = authorization_header.split()
