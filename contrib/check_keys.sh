@@ -18,7 +18,7 @@ if [ -f "$LOCKBOX_CONFIG_FILE" ]; then
   if [ $? == 0 ]; then
     echo "$fetched_keys"
 
-    authorized_keys_file="~$KEYS_USER/.ssh/authorized_keys"
+    authorized_keys_file="~$keys_user/.ssh/authorized_keys"
     eval authorized_keys_file="$authorized_keys_file"
     if [ -f "$authorized_keys_file" ]; then
       regular_authorized_keys=$(sed '/.*### LOCKBOX SECTION.*/{s///;q;}' < "$authorized_keys_file")
