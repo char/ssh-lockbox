@@ -23,9 +23,8 @@ if [ -f "$LOCKBOX_CONFIG_FILE" ]; then
       regular_authorized_keys=$(sed '/.*### LOCKBOX SECTION ###.*/{s///;q;}' < "$authorized_keys_file")
 
       (echo "$regular_authorized_keys"; echo '### LOCKBOX SECTION ###
-# Please do not edit under this section, it is
-# automatically generated and may be wiped
-# at any time.'; echo "$fetched_keys") > "$authorized_keys_file"
+# Please do not edit under this section. It is automatically generated,
+# and may be wiped at any time.'; echo "$fetched_keys") > "$authorized_keys_file"
     fi
   else
     >&2 echo "An error occurred while fetching $1's keys from $keys_host."
