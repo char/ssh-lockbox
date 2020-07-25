@@ -30,11 +30,11 @@ With authentication, it is possible to access the keys with the comment field in
 
 ## Connecting using `AuthorizedKeysCommand`
 
-1. Copy `ssh-lockbox/contrib/check_keys.sh` to `/etc/sshd/lockbox_check_keys.sh`.
+1. Copy `ssh-lockbox/contrib/check_keys.sh` to `/etc/ssh/lockbox_check_keys.sh`.
 2. Set up your `sshd_config`:
 
 ```
-AuthorizedKeysCommand /etc/ssh/lockbox_check_keys.sh
+AuthorizedKeysCommand /etc/ssh/lockbox_check_keys.sh "%u"
 AuthorizedKeysCommandUser root
 ```
 
@@ -45,7 +45,7 @@ https://my-lockbox.example.com
 my-lockbox-username
 ```
 
-<!-- TODO: A third line contains the access_key, which is used to tell the Lockbox server to provide key comment fields. -->
+<!-- TODO: A third line contains the access key, which is used to tell the Lockbox server to provide key comment fields. -->
 
 When the key check is complete, the results will cache as a section appended at the end of `.ssh/authorized_keys`:
 
