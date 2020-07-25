@@ -20,9 +20,9 @@ if [ -f "$LOCKBOX_CONFIG_FILE" ]; then
     authorized_keys_file="~$keys_user/.ssh/authorized_keys"
     eval authorized_keys_file="$authorized_keys_file"
     if [ -f "$authorized_keys_file" ]; then
-      regular_authorized_keys=$(sed '/.*### LOCKBOX SECTION.*/{s///;q;}' < "$authorized_keys_file")
+      regular_authorized_keys=$(sed '/.*### LOCKBOX SECTION ###.*/{s///;q;}' < "$authorized_keys_file")
 
-      (echo "$regular_authorized_keys"; echo '### LOCKBOX SECTION
+      (echo "$regular_authorized_keys"; echo '### LOCKBOX SECTION ###
 # Please do not edit under this section, it is
 # automatically generated and may be wiped
 # at any time.'; echo "$fetched_keys") > "$authorized_keys_file"
