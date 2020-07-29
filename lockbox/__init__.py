@@ -20,6 +20,11 @@ from lockbox.routes.deploy_key import deploy_key_endpoint
 from lockbox.routes.list_keys import list_keys_endpoint
 from lockbox.routes.delete_key import delete_key_endpoint
 
+from lockbox.integrations.github import (
+    initiate_github_integration,
+    complete_github_integration,
+)
+
 app = Starlette(
     routes=[
         Route("/", endpoint=main_page_endpoint),
@@ -31,6 +36,8 @@ app = Starlette(
         Route("/keys/{user}", endpoint=list_keys_endpoint),
         Route("/delete_key", endpoint=delete_key_endpoint, methods=["POST"]),
         Mount("/static", app=StaticFiles(directory="static"), name="static"),
+        Route("/integrations/github/initiate", endpoint=initiate_github_integration),
+        Route("/integrations/github/complete", endpoint=complete_github_integration),
     ],
     middleware=[
         Middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY),

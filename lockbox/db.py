@@ -36,3 +36,15 @@ access_keys = sqlalchemy.Table(
     sqlalchemy.Column("access_key_description", sqlalchemy.String, nullable=False),
     sqlalchemy.Column("access_key_token", sqlalchemy.String, nullable=False),
 )
+
+user_integrations = sqlalchemy.Table(
+    "user_integrations",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column(
+        "user_id", sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"), nullable=False
+    ),
+    sqlalchemy.Column("integration_type", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("integration_domain", sqlalchemy.String, nullable=False),
+    sqlalchemy.Column("integration_data", sqlalchemy.JSON, nullable=False),
+)

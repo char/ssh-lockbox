@@ -4,7 +4,7 @@ Aren't you tired of generating so many keys, and having to add them manually to 
 
 Lockbox is a centralised store for your personal SSH keys. It supports:
 
-- [GitHub](https://github.com/)\*
+- [GitHub](https://github.com/)
 - [GitLab](https://gitlab.com/)\*
 - [Gogs](https://gogs.io/) and [Gitea](https://gitea.io/)\*
 - Any `sshd` with an `AuthorizedKeysCommand` configuration directive

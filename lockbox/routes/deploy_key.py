@@ -2,9 +2,11 @@ from typing import Tuple, Optional
 
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
+from starlette.background import BackgroundTask
 
 from lockbox.flashes import flash
 from lockbox.db import database, keys, users
+from lockbox.integrations import run_key_deploy_integrations
 
 
 class InvalidKeyException(Exception):
@@ -38,6 +40,8 @@ async def deploy_key_endpoint(request: Request):
         return RedirectResponse("/", 303)
     plaintext_key = plaintext_key.strip()
 
+    background_task = None
+
     try:
         ssh_algo, ssh_contents, ssh_comment = parse_ssh_key(plaintext_key)
         async with database.transaction():
@@ -53,8 +57,15 @@ async def deploy_key_endpoint(request: Request):
             await database.execute(query)
 
             flash(request, "success", "The provided SSH key has been deployed.")
-            # TODO: Dispatch background tasks for GitHub, Gitea, etc
+
+            background_task = BackgroundTask(
+                run_key_deploy_integrations,
+                user_id,
+                ssh_algo,
+                ssh_contents,
+                ssh_comment,
+            )
     except:
         flash(request, "error", "Invalid key data.")
 
-    return RedirectResponse("/", 303)
+    return RedirectResponse("/", 303, background=background_task)
