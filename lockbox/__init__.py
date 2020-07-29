@@ -23,6 +23,7 @@ from lockbox.routes.delete_key import delete_key_endpoint
 from lockbox.integrations.github import (
     initiate_github_integration,
     complete_github_integration,
+    force_sync_github_integration,
 )
 
 app = Starlette(
@@ -38,6 +39,9 @@ app = Starlette(
         Mount("/static", app=StaticFiles(directory="static"), name="static"),
         Route("/integrations/github/initiate", endpoint=initiate_github_integration),
         Route("/integrations/github/complete", endpoint=complete_github_integration),
+        Route(
+            "/integrations/github/force_sync", endpoint=force_sync_github_integration
+        ),
     ],
     middleware=[
         Middleware(SessionMiddleware, secret_key=SESSION_SECRET_KEY),

@@ -71,6 +71,16 @@ async def complete_github_integration(request: Request):
             headers={"Accept": "application/json"},
         )
 
+        if res.is_error or "error" in res.json():  # Why is this a 2xx, GitHub?
+            print("Could not complete GitHub OAuth:")
+            print(res.json())
+            flash(
+                request,
+                "error",
+                "An error occurred while trying to authenticate with GitHub",
+            )
+            return RedirectResponse("/")
+
         async with database.transaction():
             query = user_integrations.insert().values(
                 user_id=user_id,
@@ -78,13 +88,47 @@ async def complete_github_integration(request: Request):
                 integration_domain="github.com",
                 integration_data=res.json(),  # { "access_token": ..., "token_type": ... }
             )
-            user_integration_row = await database.execute(query)
+            await database.execute(query)
+
+            query = (  # Why does encode.io's databases module make it so hard to get back the created record?
+                user_integrations.select()
+                .where(user_integrations.c.user_id == user_id)
+                .where(user_integrations.c.integration_type == GITHUB_INTEGRATION_TYPE)
+                .where(user_integrations.c.integration_domain == "github.com")
+            )
+            user_integration_row = await database.fetch_one(query)
+
             flash(request, "success", "Added GitHub integration for 'github.com'")
 
         async with get_integration_from_db(user_integration_row) as integration:
             return RedirectResponse(
                 "/", background=BackgroundTask(integration.full_sync)
             )
+
+
+async def force_sync_github_integration(request):
+    """Force sync any GitHub integrations for this user (via POST request only)"""
+
+    if not request.user.is_authenticated:
+        flash(request, "error", "You are not logged in!")
+        return RedirectResponse("/", 303)
+
+    username = request.user.username
+    query = users.select().where(users.c.username == request.user.username)
+    user_id = await database.fetch_val(query)
+
+    query = (
+        user_integrations.select()
+        .where(user_integrations.c.user_id == user_id)
+        .where(user_integrations.c.integration_type == GITHUB_INTEGRATION_TYPE)
+    )
+
+    integrations = await database.fetch_all(query)
+    for integration_row in integrations:
+        async with get_integration_from_db(integration_row) as integration:
+            await integration.full_sync()
+
+    return PlainTextResponse("Success.")
 
 
 def _create_authed_http(access_token) -> httpx.AsyncClient:
@@ -123,7 +167,9 @@ class GitHubIntegration(ThirdPartyIntegration):
             keys.select().where(keys.c.user_id == self.user_id)
         )
 
-        existing_keys = set(key["key"] async for key in self._iter_keys())
+        existing_keys = set()
+        async for key in self._iter_keys():
+            existing_keys.add(key["key"])
 
         coroutines = []
         for ssh_key in ssh_keys:
