@@ -14,11 +14,12 @@ Written using [Starlette](https://www.starlette.io/).
 ## Security
 
 **Beware:** For all the systems you hook it up to, Lockbox is a [single point of failure](https://en.wikipedia.org/wiki/Single_point_of_failure).
-That is, if an adversary can gain control of your account on your Lockbox instance,
+That is, if an adversary can gain control of your account on the Lockbox instance you are using,
 they can deploy their own key and access any of the linked systems.
 
 Furthermore, the administrator of the Lockbox instance you are using is capable of adding keys under any user,
-so make sure you trust the admin. (In the best-case scenario, the admin is you.)
+so make sure you trust the admin. (In the best-case scenario, the admin is you. The multi-user functionality
+of the software is designed for teams.)
 
 ## Details
 
@@ -58,6 +59,21 @@ ssh-ed25519 ...
 ssh-ed25519 ...
 ```
 
+## Connecting a GitHub account
+
+Currently, only GitHub.com is supported. Enterprise instances of GitHub on another domain are not.
+
+First, the administrator of the Lockbox instance must create an OAuth application with GitHub:
+
+You can do this heading to [github.com/settings/developers](https://github.com/settings/developers) and adding a new OAuth app.
+I recommend you name it "Lockbox @ &lt;domain&gt;".
+
+The callback URL for the OAuth app should be `https://<lockbox instance>/integrations/github/complete`.
+
+Then, put the client ID and client secret in the corresponding fields in the application's configuration.
+
+Any user can then navigate to `https://<lockbox instance>/integrations/github/initiate` to set up a GitHub integration, after which all of their keys added to Lockbox will be pushed to GitHub, and all future key deployments will also trigger the key being sent to GitHub.
+
 ## Running the Server
 
 ```
@@ -78,3 +94,5 @@ The configuration entries are as follows:
 - `DATABASE_URL`: A connection URL for the application's database. A configuration (using SQLite) for development is included in `.env.schema`.
 - `SESSION_SECRET_KEY`: The secret key to sign session information with. This should be a randomly generated blob of data.
 - `REGISTRATION_ENABLED`: Whether to permit arbitrary user registration.
+- `GITHUB_CLIENT_ID`: An OAuth client ID for GitHub integration.
+- `GITHUB_CLIENT_SECRET`: An OAuth client secret for GitHub integration.
