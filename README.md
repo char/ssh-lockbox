@@ -9,6 +9,8 @@ Lockbox is a centralised store for your personal SSH keys. It supports:
 
 Written using [Starlette](https://www.starlette.io/).
 
+![An example instance of Lockbox, logged in as half-kh-hacker](docs/scrot.png)
+
 ## Security
 
 **Beware:** For all the systems you hook it up to, Lockbox is a [single point of failure](https://en.wikipedia.org/wiki/Single_point_of_failure).
