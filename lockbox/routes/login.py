@@ -10,8 +10,9 @@ from lockbox.flashes import flash
 async def login_valid(username: str, password: str) -> bool:
     query = users.select().where(users.c.username == username)
     matching_user = await database.fetch_one(query=query)
+
     if matching_user:
-        user_id, user_username, user_password_hash = matching_user
+        user_id, user_username, user_password_hash = matching_user.values()
 
         return bcrypt.checkpw(
             password.encode("utf-8"), user_password_hash.encode("ascii")
