@@ -21,6 +21,7 @@ header {
 }
 
 .small-form {
+  display: inline-block;
   margin-top: -0.5em;
 }
 

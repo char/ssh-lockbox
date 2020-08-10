@@ -6,6 +6,9 @@
 {% block content %}
   {% if request.user.is_authenticated %}
     <p>Logged in as <strong>{{ request.user.display_name }}</strong>.</p>
+    <form class="small-form" action="/change_password/" method="GET">
+      <input type="submit" value="Change password">
+    </form>
     <form class="small-form" action="/logout" method="POST">
       <input class="danger" type="submit" value="Log out">
     </form>
