@@ -28,7 +28,7 @@ async def change_password_endpoint(request: Request):
 
     query = users.select().where(users.c.username == request.user.username)
     user = await database.fetch_one(query=query)
-    user_id, user_username, user_password_hash = user.values()
+    user_id, user_username, user_password_hash = user
 
     form_data = await request.form()
     current_password = form_data.get("current_password")

@@ -12,7 +12,7 @@ async def login_valid(username: str, password: str) -> bool:
     matching_user = await database.fetch_one(query=query)
 
     if matching_user:
-        user_id, user_username, user_password_hash = matching_user.values()
+        user_id, user_username, user_password_hash = matching_user
 
         return bcrypt.checkpw(
             password.encode("utf-8"), user_password_hash.encode("ascii")
