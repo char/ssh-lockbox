@@ -96,3 +96,5 @@ The configuration entries are as follows:
 - `REGISTRATION_ENABLED`: Whether to permit arbitrary user registration.
 - `GITHUB_CLIENT_ID`: An OAuth client ID for GitHub integration.
 - `GITHUB_CLIENT_SECRET`: An OAuth client secret for GitHub integration.
+
+**Note:** If you want to use a PostgreSQL database, please use `aiopg` instead of `postgres`. `postgres` with encode.io's `databases` module returns non-standard row results, and will cause all sorts of weird errors.
