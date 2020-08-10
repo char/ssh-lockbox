@@ -31,15 +31,15 @@ async def change_password_endpoint(request: Request):
     user_id, user_username, user_password_hash = user.values()
 
     form_data = await request.form()
-    previous_password = form_data.get("previous_password")
+    current_password = form_data.get("current_password")
     password = form_data.get("password")
     password_confirm = form_data.get("password_confirm")
 
     has_errors = False
 
-    if not previous_password:
+    if not current_password:
         has_errors = True
-        flash(request, "error", "'previous_password' is a required field.")
+        flash(request, "error", "'current_password' is a required field.")
 
     if not password:
         has_errors = True
@@ -50,10 +50,10 @@ async def change_password_endpoint(request: Request):
         flash(request, "error", "'password_confirm' is a required field.")
 
     if not bcrypt.checkpw(
-        previous_password.encode("utf-8"), user_password_hash.encode("ascii")
+        current_password.encode("utf-8"), user_password_hash.encode("ascii")
     ):
         has_errors = True
-        flash(request, "error", "The provided previous password is incorrect.")
+        flash(request, "error", "The provided password confirmation is incorrect.")
 
     if len(password) < 32:
         has_errors = True
@@ -74,21 +74,18 @@ async def change_password_endpoint(request: Request):
     if has_errors:
         return RedirectResponse("/change_password/", 303)
 
-    password_hash = bcrypt.hashpw(
-        password.encode("utf-8"), bcrypt.gensalt()
-    ).decode("ascii")
+    password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+    password_hash = password_hash.decode("ascii")
 
     async with database.transaction():
-        update_query = users.update().where(
-            users.c.username == request.user.username
-        ).values(password_hash=password_hash)
+        update_query = (
+            users.update()
+            .where(users.c.username == request.user.username)
+            .values(password_hash=password_hash)
+        )
 
         await database.execute(update_query)
 
-        flash(
-            request,
-            "success",
-            "Password changed."
-        )
+        flash(request, "success", "Password changed.")
 
     return RedirectResponse("/", 303)
