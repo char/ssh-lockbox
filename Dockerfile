@@ -7,4 +7,5 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+RUN alembic upgrade head
 CMD [ "bash", "run_prod.sh", "--bind", "0.0.0.0:80" ]
